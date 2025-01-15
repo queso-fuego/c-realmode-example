@@ -70,10 +70,10 @@ void load_gdt_and_jump_to_kernel() {
         "or $1, %%al\n"
         "mov %%eax, %%cr0\n"
 
-        "jmp $0x08,$set_segments\n" // Far jump to set CS (code segment)
+        "jmp $0x08,$1f\n" // Far jump to set CS (code segment)
 
         ".code32\n"                 // Generate 32 bit code
-        "set_segments:\n"
+        "1:\n"
 
         "mov $0x10, %%ax\n"         // Set rest of segment registers (data segment)
         "mov %%ax, %%ds\n"
