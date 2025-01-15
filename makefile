@@ -2,19 +2,19 @@ CC     = clang
 CFLAGS = -std=c23 -Wall -Wextra -Wpedantic \
 		 -march=i386 \
 		 -ffreestanding -fno-pie -fno-stack-protector -fno-builtin \
-		 -fno-asynchronous-unwind-tables -fomit-frame-pointer \
-		 -nostdlib -save-temps -g \
+		 -nostdlib -g \
 		 -Wl,-nostdlib,-static,--omagic,--build-id=none
 
 BINS_16 = boot stage2 
 BINS_32 = kernel
-DISK = disk.raw
+DISK    = disk.raw
+QEMU    = qemu-system-i386 -drive format=raw,file=$(DISK),media=disk,if=floppy
 
 all: $(DISK)
-	qemu-system-i386 -drive format=raw,file=$(DISK),media=disk,if=floppy
+	$(QEMU)	
 
 debug: $(DISK)
-	qemu-system-i386 -drive format=raw,file=$(DISK),media=disk,if=floppy -S -s & gdb
+	$(QEMU)	-S -s & gdb
 
 $(BINS_16): %: %.c %.ld
 	$(CC) $(CFLAGS) -m16 -Wl,-T$@.ld -o $@.elf $<
