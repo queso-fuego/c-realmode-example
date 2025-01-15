@@ -1,7 +1,8 @@
-CC     = clang
+CC     = gcc
 CFLAGS = -std=c23 -Wall -Wextra -Wpedantic \
 		 -march=i386 \
 		 -ffreestanding -fno-pie -fno-stack-protector -fno-builtin \
+		 -fno-asynchronous-unwind-tables \
 		 -nostdlib -g \
 		 -Wl,-nostdlib,-static,--omagic,--build-id=none
 
